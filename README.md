@@ -15,3 +15,7 @@ NAME = Name of the app you want to create
 DESCRIPTION = Description of the app you want to create (If not supplied name will be used by defualt)
 
 VERSION = Version of the app you want to create, eg 0.0.0 (If not supplied, default version wil be used by default .i.e. 0.0.0)
+
+## Development server
+
+Run `npm start` for a dev server. Navigate to `http://localhost:4200`. The app will automatically reload if you change any of the source files.
