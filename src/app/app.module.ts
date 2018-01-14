@@ -6,6 +6,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppComponent } from './app.component';
 
 import { environment } from '../environments/environment';
+import {HttpClientService} from './services/http-client.service';
+import {ManifestService} from './services/manifest.service';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,10 @@ import { environment } from '../environments/environment';
     BrowserModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
   ],
-  providers: [],
+  providers: [
+    ManifestService,
+    HttpClientService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
