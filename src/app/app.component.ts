@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import {Store} from '@ngrx/store';
+
+import * as fromRoot from '@app/store';
+import * as fromCurrentUserAction from '@app/store/actions';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +11,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
+  constructor(private store: Store<fromRoot.State>) {
+    store.dispatch(new fromCurrentUserAction.LoadAction());
+  }
 }

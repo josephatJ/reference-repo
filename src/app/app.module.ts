@@ -1,13 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AppComponent } from './app.component';
+import { NgModule } from '@angular/core';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+import {RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '@env/environment';
 
-import { environment } from '../environments/environment';
-import {HttpClientService} from './services/http-client.service';
-import {ManifestService} from './services/manifest.service';
+import { AppComponent } from './app.component';
+import * as fromCoreModules from '@app/core';
+import {effects, metaReducers, reducers} from '@app/store';
+import {RoutingModule} from '@app/app.routes';
+
+
 
 @NgModule({
   declarations: [
@@ -15,11 +21,33 @@ import {ManifestService} from './services/manifest.service';
   ],
   imports: [
     BrowserModule,
-    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production })
+    RoutingModule,
+    ...fromCoreModules.modules,
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
+    BrowserAnimationsModule,
+
+    /**
+     * Reducers
+     */
+    StoreModule.forRoot(reducers, { metaReducers }),
+
+    /**
+     * Effects
+     */
+    EffectsModule.forRoot(effects),
+
+    /**
+     * @ngrx/router-store keeps router state up-to-date in the store
+     */
+    StoreRouterConnectingModule,
+
+    /**
+     * Dev tool, enabled only in development mode
+     */
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [
-    ManifestService,
-    HttpClientService
+    { provide: RouterStateSerializer, useClass: fromCoreModules.RouteSerializer }
   ],
   bootstrap: [AppComponent]
 })
