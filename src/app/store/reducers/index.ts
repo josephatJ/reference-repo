@@ -1,6 +1,6 @@
-import {ActionReducerMap, MetaReducer} from '@ngrx/store';
-import {environment} from '@env/environment';
-import {storeFreeze} from 'ngrx-store-freeze';
+import { ActionReducerMap, MetaReducer } from '@ngrx/store';
+import { environment } from '@env/environment';
+import { storeFreeze } from 'ngrx-store-freeze';
 import * as fromRouterReducer from '@ngrx/router-store';
 import * as fromCurrentUserReducer from './current-user.reducer';
 
@@ -14,4 +14,8 @@ export const reducers: ActionReducerMap<State> = {
   currentUser: fromCurrentUserReducer.currentUserReducer
 };
 
-export const metaReducers: MetaReducer<State>[] = !environment.production ? [storeFreeze] : [];
+export const getRootState = (state: State) => state;
+
+export const metaReducers: MetaReducer<State>[] = !environment.production
+  ? [storeFreeze]
+  : [];
