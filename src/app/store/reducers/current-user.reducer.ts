@@ -1,4 +1,4 @@
-import * as fromCurrentUserAction from '../actions';
+import * as fromCurrentUserActions from '../actions';
 export interface CurrentUserState {
   id: string;
   name: string;
@@ -10,9 +10,9 @@ export interface CurrentUserState {
   userCredentials: any;
 }
 
-export function currentUserReducer(state: CurrentUserState = null, action: fromCurrentUserAction.CurrentUserAction) {
+export function currentUserReducer(state: CurrentUserState = null, action: fromCurrentUserActions.CurrentUserActions) {
   switch (action.type) {
-    case fromCurrentUserAction.CurrentUserActions.LOAD_SUCCESS:
+    case fromCurrentUserActions.LOAD_SUCCESS:
       return {...action.payload};
     default:
       return state;

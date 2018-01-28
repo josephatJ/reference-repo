@@ -4,7 +4,7 @@ import {catchError, map, switchMap} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
 
 import {HttpClientService} from '@app/core';
-import * as fromCurrentUserAction from '../actions';
+import * as fromCurrentUserActions from '../actions';
 import * as fromCurrentUser from '../reducers/current-user.reducer';
 import {of} from 'rxjs/observable/of';
 
@@ -13,12 +13,12 @@ export class CurrentUserEffects {
 
   @Effect()
   loadCurrentUser$ = this.actions$
-    .ofType<fromCurrentUserAction.LoadAction>(fromCurrentUserAction.CurrentUserActions.LOAD)
+    .ofType<fromCurrentUserActions.LoadAction>(fromCurrentUserActions.LOAD)
     .pipe(
       switchMap(() => this._load()),
       map((currentUserObject: fromCurrentUser.CurrentUserState) =>
-        new fromCurrentUserAction.LoadSuccessAction(currentUserObject)),
-      catchError((error) => of(new fromCurrentUserAction.LoadFailAction()))
+        new fromCurrentUserActions.LoadSuccessAction(currentUserObject)),
+      catchError((error) => of(new fromCurrentUserActions.LoadFailAction()))
     );
 
   constructor(private actions$: Actions,
