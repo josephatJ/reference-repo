@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {ManifestService} from './manifest.service';
+import { catchError, flatMap } from 'rxjs/operators';
 
 @Injectable()
 export class HttpClientService {
@@ -13,22 +14,26 @@ export class HttpClientService {
               private manifestService: ManifestService) {
   }
 
-  get(url: string, useRootUrl: boolean = false): Observable<any> {
-    return new Observable(observer => {
-      const rootUrlPromise = useRootUrl ? this._getRootUrl() : this._getApiRootUrl();
+  get(
+    url: string,
+    useRootUrl: boolean = false,
+    useExternalUrl: boolean = false
+  ): Observable<any> {
+    const rootUrlPromise = useRootUrl
+      ? this._getRootUrl()
+      : this._getApiRootUrl();
 
-      rootUrlPromise.subscribe((rootUrl: string) => {
-        this.httpClient.get(rootUrl + url)
-          .subscribe((response: any) => {
-            observer.next(response);
-            observer.complete();
-          }, (error) => {
-
-            console.log(this._handleError(error));
-            observer.error(this._handleError(error));
-          });
-      });
-    });
+    return useExternalUrl
+      ? this.httpClient
+      .get(url)
+      .pipe(catchError(error => this._handleError(error)))
+      : rootUrlPromise.pipe(
+        flatMap((rootUrl: string) =>
+          this.httpClient
+          .get(rootUrl + url)
+          .pipe(catchError(error => this._handleError(error)))
+        )
+      );
   }
 
   post(url: string, data: any, useRootUrl: boolean = false) {

@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import * as fromCurrentUser from '../reducers/current-user.reducer';
+import { CurrentUser } from '@app/core';
 
 export const LOAD = '[Current User] Load current user';
 
@@ -12,7 +13,7 @@ export const LOAD_SUCCESS = '[Current User] Load current user success';
 export class LoadSuccessAction implements Action {
   readonly type = LOAD_SUCCESS;
 
-  constructor(public payload: fromCurrentUser.CurrentUser) {}
+  constructor(public payload: CurrentUser) {}
 }
 
 export const LOAD_FAIL = '[Current User] Load current user fail';
