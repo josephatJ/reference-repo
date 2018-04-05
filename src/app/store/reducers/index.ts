@@ -1,21 +1,29 @@
-import { ActionReducerMap, MetaReducer } from '@ngrx/store';
-import { environment } from '@env/environment';
+import { ActionReducerMap, createSelector, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
-import * as fromRouterReducer from '@ngrx/router-store';
-import * as fromCurrentUserReducer from './current-user.reducer';
+import { environment } from '../../../environments/environment';
+import { routerReducer, RouterReducerState } from '@ngrx/router-store';
+import { currentUserReducer, CurrentUserState } from './current-user.reducer';
 
-export interface State {
-  route: fromRouterReducer.RouterReducerState;
-  currentUser: fromCurrentUserReducer.CurrentUserState;
+export interface AppState {
+  route: RouterReducerState;
+  currentUser: CurrentUserState;
 }
 
-export const reducers: ActionReducerMap<State> = {
-  route: fromRouterReducer.routerReducer,
-  currentUser: fromCurrentUserReducer.currentUserReducer
+export const reducers: ActionReducerMap<AppState> = {
+  route: routerReducer,
+  currentUser: currentUserReducer
 };
 
-export const getRootState = (state: State) => state;
+export const getRootState = (state: AppState) => state;
 
-export const metaReducers: MetaReducer<State>[] = !environment.production
+/**
+ * Get current user state
+ */
+export const getCurrentUserState = createSelector(
+  getRootState,
+  (state: AppState) => state.currentUser
+);
+
+export const metaReducers: MetaReducer<AppState>[] = !environment.production
   ? [storeFreeze]
   : [];

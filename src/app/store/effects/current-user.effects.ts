@@ -1,30 +1,28 @@
-import { CurrentUserService } from './../../core/services/current-user.service';
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-
-import * as fromCore from '@app/core';
-import * as fromCurrentUserActions from '../actions';
-import * as fromCurrentUser from '../reducers/current-user.reducer';
+import { CurrentUserService } from '../../core/services/current-user.service';
+import {
+  CurrentUserActionTypes, LoadCurrentUserFailAction,
+  LoadCurrentUserSuccessAction
+} from '../actions/current-user.actions';
+import { CurrentUser } from '../../core/models/current-user.model';
 
 @Injectable()
 export class CurrentUserEffects {
-  constructor(
-    private actions$: Actions,
-    private currentUserService: fromCore.CurrentUserService
-  ) {}
+  constructor(private actions$: Actions,
+    private currentUserService: CurrentUserService) {
+  }
 
   @Effect()
-  loadCurrentUser$ = this.actions$
-    .ofType<fromCurrentUserActions.LoadAction>(fromCurrentUserActions.LOAD)
-    .pipe(
-      switchMap(() => this.currentUserService.loadUser()),
-      map(
-        (currentUser: fromCore.CurrentUser) =>
-          new fromCurrentUserActions.LoadSuccessAction(currentUser)
-      ),
-      catchError(error => of(new fromCurrentUserActions.LoadFailAction()))
-    );
+  loadCurrentUser$ = this.actions$.pipe(
+    ofType(CurrentUserActionTypes.LOAD),
+    switchMap(() => this.currentUserService.loadUser()),
+    map(
+      (currentUser: CurrentUser) =>
+        new LoadCurrentUserSuccessAction(currentUser)
+    ),
+    catchError(error => of(new LoadCurrentUserFailAction()))
+  );
 }

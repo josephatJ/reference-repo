@@ -1,9 +1,8 @@
-import { CurrentUserState } from './current-user.reducer';
-import * as fromCurrentUserActions from '../actions/current-user.actions';
-import { CurrentUser } from '@app/core';
+import { CurrentUser } from '../../core/models/current-user.model';
+import { CurrentUserAction, CurrentUserActionTypes } from '../actions/current-user.actions';
 
 export interface CurrentUserState {
-  currentUser: CurrentUser;
+  user: CurrentUser;
   loading: boolean;
   loaded: boolean;
 }
@@ -11,23 +10,23 @@ export interface CurrentUserState {
 export const initialState: CurrentUserState = {
   loading: false,
   loaded: false,
-  currentUser: null
+  user: null
 };
 
 export function currentUserReducer(
   state: CurrentUserState = initialState,
-  action: fromCurrentUserActions.CurrentUserActions
+  action: CurrentUserAction
 ): CurrentUserState {
   switch (action.type) {
-    case fromCurrentUserActions.LOAD:
+    case CurrentUserActionTypes.LOAD:
       return {
         ...state,
         loading: true
       };
-    case fromCurrentUserActions.LOAD_SUCCESS:
+    case CurrentUserActionTypes.LOAD_SUCCESS:
       return {
         ...state,
-        currentUser: action.payload,
+        user: action.currentUser,
         loaded: true,
         loading: false
       };
@@ -36,6 +35,6 @@ export function currentUserReducer(
   return state;
 }
 
-export const getCurrentUser = (state: CurrentUserState) => state.currentUser;
-export const getCurrentUserLoading = (state: CurrentUserState) => state.loading;
-export const getCurrentUserLoaded = (state: CurrentUserState) => state.loaded;
+export const getUserState = (state: CurrentUserState) => state.user;
+export const getCurrentUserLoadingState = (state: CurrentUserState) => state.loading;
+export const getCurrentUserLoadedState = (state: CurrentUserState) => state.loaded;

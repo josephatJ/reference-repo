@@ -1,28 +1,26 @@
 import { Action } from '@ngrx/store';
-import * as fromCurrentUser from '../reducers/current-user.reducer';
-import { CurrentUser } from '@app/core';
+import { CurrentUser } from '../../core/models/current-user.model';
 
-export const LOAD = '[Current User] Load current user';
-
-export class LoadAction implements Action {
-  readonly type = LOAD;
+export enum CurrentUserActionTypes {
+  LOAD = '[Current User] Load current user',
+  LOAD_SUCCESS = '[Current User] Load current user success',
+  LOAD_FAIL = '[Current User] Load current user fail'
 }
 
-export const LOAD_SUCCESS = '[Current User] Load current user success';
-
-export class LoadSuccessAction implements Action {
-  readonly type = LOAD_SUCCESS;
-
-  constructor(public payload: CurrentUser) {}
+export class LoadCurrentUserAction implements Action {
+  readonly type = CurrentUserActionTypes.LOAD;
 }
 
-export const LOAD_FAIL = '[Current User] Load current user fail';
+export class LoadCurrentUserSuccessAction implements Action {
+  readonly type = CurrentUserActionTypes.LOAD_SUCCESS;
 
-export class LoadFailAction implements Action {
-  readonly type = LOAD_FAIL;
+  constructor(public currentUser: CurrentUser) {}
 }
 
-export type CurrentUserActions =
-  | LoadAction
-  | LoadSuccessAction
-  | LoadFailAction;
+export class LoadCurrentUserFailAction implements Action {
+  readonly type = CurrentUserActionTypes.LOAD_FAIL;
+}
+
+export type CurrentUserAction = LoadCurrentUserAction
+  | LoadCurrentUserSuccessAction
+  | LoadCurrentUserFailAction;

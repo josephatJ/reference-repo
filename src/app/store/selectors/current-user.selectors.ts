@@ -1,23 +1,18 @@
 import { createSelector } from '@ngrx/store';
-import * as fromRoot from '../reducers';
-import * as fromCurrentUser from '../reducers/current-user.reducer';
-
-export const getCurrentUserState = createSelector(
-  fromRoot.getRootState,
-  (state: fromRoot.State) => state.currentUser
-);
+import { getCurrentUserState } from '../reducers';
+import { getCurrentUserLoadedState, getCurrentUserLoadingState, getUserState } from '../reducers/current-user.reducer';
 
 export const getCurrentUser = createSelector(
   getCurrentUserState,
-  fromCurrentUser.getCurrentUser
+  getUserState
 );
 
 export const getCurrentUserLoading = createSelector(
   getCurrentUserState,
-  fromCurrentUser.getCurrentUserLoading
+  getCurrentUserLoadingState
 );
 
 export const getCurrentUserLoaded = createSelector(
   getCurrentUserState,
-  fromCurrentUser.getCurrentUserLoaded
+  getCurrentUserLoadedState
 );
