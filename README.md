@@ -1,3 +1,4 @@
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 # SeedApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
@@ -63,6 +64,11 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ## Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Code commit
+
+This app has been configured to use Commitizen tool in order to write commits in standard format. To commit using commitizen just type
+`npm run commit` and fill in details based on questions that will be asked. For more info about Commitizen tool check out  [Commitizen](https://commitizen.github.io/cz-cli/)
 
 ## Further help
 
